@@ -1,10 +1,18 @@
+<!-- res/values/styles.xml -->
 <resources>
-    <!-- Base application theme for light mode -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here -->
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- Other attributes specific to your app -->
+    </style>
+
+    <!-- Custom DatePickerDialog theme -->
+    <style name="YellowDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize the dialog background color -->
+        <item name="android:background">#FF8800</item>
+        <!-- Customize other attributes if needed -->
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 </resources>

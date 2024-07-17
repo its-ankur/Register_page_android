@@ -104,11 +104,11 @@ public class RegisterPage extends AppCompatActivity {
                         if (passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
                             passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                             // Change the drawable to viewOn
-                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.view_off, 0);
+                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_crossed_eye, 0);
                         } else {
                             passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                             // Change the drawable to viewOff
-                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.view_on, 0);
+                            passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_remove_red_eye_24, 0);
                         }
                         // Move the cursor to the end of the text
                         passwordEditText.setSelection(passwordEditText.getText().length());
@@ -130,10 +130,10 @@ public class RegisterPage extends AppCompatActivity {
                         // Toggle between showing and hiding the password
                         if (confirmPasswordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
                             confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                            confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.view_off, 0);
+                            confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_crossed_eye, 0);
                         } else {
                             confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.view_on, 0);
+                            confirmPasswordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_remove_red_eye_24, 0);
                         }
                         // Move the cursor to the end of the text
                         confirmPasswordEditText.setSelection(confirmPasswordEditText.getText().length());
@@ -410,7 +410,10 @@ public class RegisterPage extends AppCompatActivity {
                         emailLayout.setError("Email Address is required");
                     } else if (!isValidEmail(email)) {
                         emailLayout.setError("Please enter a valid email address");
-                    } else {
+                    }
+                    else if (userDAO.isEmailExists(email)) {
+                        emailLayout.setError("Email already exists");
+                    }else {
                         emailLayout.setError(null);
                     }
                 }
@@ -622,8 +625,10 @@ public class RegisterPage extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        // Use the custom theme for the DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 RegisterPage.this,
+                R.style.Theme_AppCompat_Light_Dialog_YellowDatePicker,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -635,4 +640,5 @@ public class RegisterPage extends AppCompatActivity {
                 year, month, day);
         datePickerDialog.show();
     }
+
 }
