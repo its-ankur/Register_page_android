@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="dropdown_items">
+    <item>India</item>
+    <item>Pakistan </item>
+    <item>USA</item>
+    <item>Canada</item>
+    <item>Ireland</item>
+</string-array>
+</resources>

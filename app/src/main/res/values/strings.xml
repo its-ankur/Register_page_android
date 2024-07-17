@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Register Page</string>
+    <string name="registration_heading_text">Register</string>
+    <string name="registration_subheading_text">Create your new account</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="greeting_text_heading">We\'re exited to have you here!</string>
+    <string name="greeting_text">This app is crafted to teach you the fundamentals and get you comfortable with building mobile applications using Native Android.</string>
+    <string name="email_address_hint">Email Address</string>
+    <string name="contact_number_hint">Contact Number</string>
+    <string name="date_picker_icon">Date Picker Icon</string>
+    <string name="date_of_birth_hint">Date Of Birth</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="continue_button">Continue</string>
+    <string name="toolbar_heading">Greetings, Developer!</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="accept_terms">I accept the terms and conditions</string>
+    <string name="register_button_text">Register</string>
+    <string-array name="country_array">
+        <item>Select Country</item>
+        <item>United States</item>
+        <item>Canada</item>
+        <item>United Kingdom</item>
+        <item>Australia</item>
+        <item>India</item>
+        <!-- Add more countries as needed -->
+    </string-array>
+    <string name="logout_button_text">LOGOUT</string>
+</resources>
