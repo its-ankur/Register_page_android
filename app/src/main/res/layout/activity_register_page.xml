@@ -144,7 +144,7 @@
                     android:id="@+id/dateOfBirth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_calender"
+                    android:drawableEnd="@drawable/baseline_calendar_month_24"
                     android:drawablePadding="8dp"
                     android:inputType="text"
                     android:textColor="@android:color/black" />
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textColor="@android:color/black"
-                    android:drawableEnd="@drawable/view_on"/>
+                    android:drawableEnd="@drawable/baseline_remove_red_eye_24"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Confirm Password -->
@@ -268,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textColor="@android:color/black"
-                    android:drawableEnd="@drawable/view_on"/>
+                    android:drawableEnd="@drawable/baseline_remove_red_eye_24"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Terms and Conditions Checkbox -->
