@@ -67,6 +67,13 @@ public class ShowDetailsPage extends AppCompatActivity {
             // Assuming the correct image drawable is present
             String end="end";
             Log.d("End",end);
+
+            Log.d("End",end);
+
+            Log.d("End",end);
+
+            Log.d("End",end);
+
         }
     }
 }
