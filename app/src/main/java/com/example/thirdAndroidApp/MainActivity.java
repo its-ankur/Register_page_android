@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Creating an intent to start the RegisterPage activity
-                intent = new Intent(MainActivity.this, RegisterPage.class);
+                intent = new Intent(MainActivity.this, LoginPage.class);
                 // Starting the RegisterPage activity
                 startActivity(intent);
             }

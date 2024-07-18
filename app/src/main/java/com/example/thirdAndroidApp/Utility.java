@@ -47,7 +47,7 @@ public class Utility {
     // Method to display a Snackbar for error messages
     public static void displayErrorSnackbar(View view, String message, Context context) {
         // Create a Snackbar with the provided message and a longer duration
-        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
 
         // Customize the text color and background tint of the Snackbar
         snackbar.setTextColor(ContextCompat.getColor(context, R.color.white));
@@ -60,6 +60,16 @@ public class Utility {
         // Set gravity of the Snackbar to be at the top and horizontally centered
         params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         snackBarView.setLayoutParams(params);
+
+        snackbar.setAction("✕", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+
+
+        snackbar.setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
 
         // Show the Snackbar
         snackbar.show();

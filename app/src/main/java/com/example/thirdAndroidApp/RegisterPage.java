@@ -47,7 +47,7 @@ public class RegisterPage extends AppCompatActivity {
     private Spinner countrySpinner;
     private Button btnRegister;
     private RadioGroup genderRadioGroup;
-    private TextView genderErrorText, termsErrorText, selectGender;
+    private TextView genderErrorText, termsErrorText, selectGender,loginHere;
     private CheckBox termsCheckBox;
     private Boolean flag = true;
     private ImageButton datePickerButton;
@@ -144,6 +144,15 @@ public class RegisterPage extends AppCompatActivity {
                 return false;
             }
         });
+
+        loginHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(RegisterPage.this,LoginPage.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -188,6 +197,7 @@ public class RegisterPage extends AppCompatActivity {
         termsErrorText = findViewById(R.id.termsErrorText);
         btnRegister = findViewById(R.id.btnRegister);
         genderView=findViewById(R.id.genderView);
+        loginHere=findViewById(R.id.loginHere);
 
         // Populate the Spinner with data
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -241,6 +251,7 @@ public class RegisterPage extends AppCompatActivity {
         if (fname.isEmpty()) {
             fnameLayout.setError("First name is required");
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Please provide your First Name",RegisterPage.this);
         } else {
             fnameLayout.setError(null);
         }
@@ -248,13 +259,17 @@ public class RegisterPage extends AppCompatActivity {
         // Validate email address
         if (email.isEmpty()) {
             emailLayout.setError("Email Address is required");
+            Utility.displayErrorSnackbar(v,"Please provide your Email Address",RegisterPage.this);
             isValid = false;
+
         } else if (!isValidEmail(email)) {
             emailLayout.setError("Please enter a valid email address");
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Please provide a valid Email Address",RegisterPage.this);
         } else if (userDAO.isEmailExists(email)) {
             emailLayout.setError("Email already exists");
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Email already exists",RegisterPage.this);
         } else {
             emailLayout.setError(null);
         }
@@ -264,14 +279,17 @@ public class RegisterPage extends AppCompatActivity {
             passwordLayout.setError("Password is required");
             passwordLayout.setErrorIconDrawable(null);
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Please provide a Password",RegisterPage.this);
         } else if (password.length() < 6) {
             passwordLayout.setError("Password should be at least 6 characters");
             passwordLayout.setErrorIconDrawable(null);
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Password should be atleast 6 characters long",RegisterPage.this);
         } else if (!isValidPassword(password)) {
             passwordLayout.setError("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character");
             passwordLayout.setErrorIconDrawable(null);
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",RegisterPage.this);
         } else {
             passwordLayout.setError(null);
         }
@@ -281,10 +299,13 @@ public class RegisterPage extends AppCompatActivity {
             confirmPasswordLayout.setError("Confirm Password is required");
             confirmPasswordLayout.setErrorIconDrawable(null);
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Confirm Password is required",RegisterPage.this);
+
         } else if (!confirmPassword.equals(password)) {
             confirmPasswordLayout.setError("Passwords do not match");
             confirmPasswordLayout.setErrorIconDrawable(null);
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Passwords do not match",RegisterPage.this);
         } else {
             confirmPasswordLayout.setError(null);
         }
@@ -296,6 +317,7 @@ public class RegisterPage extends AppCompatActivity {
             selectGender.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             genderView.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Gender is required",RegisterPage.this);
         } else {
             genderErrorText.setVisibility(View.GONE);
             selectGender.setTextColor(Color.BLACK);
@@ -307,6 +329,7 @@ public class RegisterPage extends AppCompatActivity {
             termsErrorText.setVisibility(View.VISIBLE);
             termsErrorText.setText("Please accept the terms and conditions");
             isValid = false;
+            Utility.displayErrorSnackbar(v,"Please accept the terms and conditions",RegisterPage.this);
         } else {
             termsErrorText.setVisibility(View.GONE);
         }
@@ -323,12 +346,14 @@ public class RegisterPage extends AppCompatActivity {
                 if (!isAgeAboveThreshold(dobDate, 18)) {
                     dateOfBirthLayout.setError("You must be at least 18 years old");
                     isValid = false;
+                    Utility.displayErrorSnackbar(v,"You need to be atleast 18 years old",RegisterPage.this);
                 } else {
                     dateOfBirthLayout.setError(null);
                 }
             } catch (ParseException e) {
                 dateOfBirthLayout.setError("Invalid date format (DD/MM/YYYY)");
                 isValid = false;
+                Utility.displayErrorSnackbar(v,"Invalid date format (DD/MM/YYYY)",RegisterPage.this);
             }
         }
 
@@ -553,6 +578,9 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String contact=s.toString().trim();
+                if(contact.isEmpty()){
+                    contactNumberLayout.setError(null);
+                }
                 if(!contact.isEmpty()) {
                     if (contact.length() < 10) {
                         contactNumberLayout.setError("Contact number must be ten digits");
@@ -577,7 +605,7 @@ public class RegisterPage extends AppCompatActivity {
         User user = new User(
                 fnameEditText.getText().toString(),
                 lnameEditText.getText().toString(),
-                emailEditText.getText().toString(),
+                emailEditText.getText().toString().toLowerCase(),
                 countrySpinner.getSelectedItem().toString(),
                 ((RadioButton) findViewById(genderRadioGroup.getCheckedRadioButtonId())).getText().toString(),
                 passwordEditText.getText().toString(),
@@ -604,13 +632,15 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email=emailEditText.getText().toString().trim();
                 // Validate inputs when register button is clicked
                 if (validateInputs(v)) {
                     saveFormDetails();
                     // If inputs are valid, clear fields
                     flag = false;
                     clearFields();
-                    Intent intent = new Intent(RegisterPage.this, ShowDetailsPage.class);
+                    Utility.displaySuccessSnackbar(v,"Registered Successfully",RegisterPage.this);
+                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
                     startActivity(intent);
                 }
             }
@@ -619,16 +649,16 @@ public class RegisterPage extends AppCompatActivity {
 
 
     // Method to display DatePickerDialog for date of birth selection
+
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Use the custom theme for the DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 RegisterPage.this,
-                R.style.Theme_AppCompat_Light_Dialog_YellowDatePicker,
+                R.style.YellowDatePickerDialog, // Apply the custom theme here
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -640,5 +670,6 @@ public class RegisterPage extends AppCompatActivity {
                 year, month, day);
         datePickerDialog.show();
     }
+
 
 }

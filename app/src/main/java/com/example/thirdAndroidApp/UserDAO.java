@@ -76,5 +76,47 @@ public class UserDAO {
         return exists;
     }
 
+    public User getUserByEmail(String email) {
+        User user = null;
+        String[] columns = {
+                DatabaseHelper.COLUMN_FIRST_NAME,
+                DatabaseHelper.COLUMN_LAST_NAME,
+                DatabaseHelper.COLUMN_EMAIL,
+                DatabaseHelper.COLUMN_COUNTRY,
+                DatabaseHelper.COLUMN_GENDER,
+                DatabaseHelper.COLUMN_PASSWORD,
+                DatabaseHelper.COLUMN_DATE_OF_BIRTH,
+                DatabaseHelper.COLUMN_CONTACT_NUMBER,
+                DatabaseHelper.COLUMN_ACCEPTED_TERMS
+        };
+        String selection = DatabaseHelper.COLUMN_EMAIL + " = ?";
+        String[] selectionArgs = { email };
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_USERS,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            user = new User(
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_FIRST_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LAST_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_EMAIL)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_COUNTRY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_GENDER)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PASSWORD)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE_OF_BIRTH)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CONTACT_NUMBER)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ACCEPTED_TERMS)) > 0
+            );
+            cursor.close();
+        }
+
+        return user;
+    }
+
 
 }

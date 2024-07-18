@@ -1,18 +1,15 @@
 <!-- res/values/styles.xml -->
 <resources>
-    <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
     <!-- Custom DatePickerDialog theme -->
     <style name="YellowDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
-        <!-- Customize the dialog background color -->
-        <item name="android:background">#FF8800</item>
-        <!-- Customize other attributes if needed -->
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <!-- Customize the dialog accent color -->
+        <item name="colorAccent">@color/yellow</item>
+        <!-- Customize the button text color -->
+        <item name="android:buttonBarButtonStyle">@style/YellowButtonStyle</item>
+    </style>
+
+    <!-- Custom Button Style for DatePickerDialog -->
+    <style name="YellowButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>
