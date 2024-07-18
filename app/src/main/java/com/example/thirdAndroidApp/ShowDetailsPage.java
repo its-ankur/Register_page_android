@@ -2,6 +2,7 @@ package com.example.thirdAndroidApp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +63,10 @@ public class ShowDetailsPage extends AppCompatActivity {
             emailView.setText(user.getEmail());
             genderView.setText(user.getGender());
             registeredText.setText("Successfully logged in");
-            correctSign.setImageResource(R.drawable.tick); // Assuming the correct image drawable is present
+            correctSign.setImageResource(R.drawable.tick);
+            // Assuming the correct image drawable is present
+            String end="end";
+            Log.d("End",end);
         }
     }
 }

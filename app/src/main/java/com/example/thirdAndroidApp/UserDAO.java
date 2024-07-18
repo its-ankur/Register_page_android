@@ -71,6 +71,10 @@ public class UserDAO {
                 null
         );
 
+
+
+
+
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
