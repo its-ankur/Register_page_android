@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar for the app -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="18dp"
+        android:background="@android:color/holo_orange_dark"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+        app:titleTextColor="@color/white" />
+
+    <!-- FrameLayout containing a View for the shadow effect below the Toolbar -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+        <!-- View to simulate a shadow under the Toolbar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_background" />
+    </FrameLayout>
+
+<ScrollView
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,40 +47,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header Section -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="285dp">
 
-            <!-- Background Image -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/register_background" />
-
-            <!-- Registration Header Text -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
-                android:text="@string/registration_heading_text"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <!-- Subheading Text -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="240dp"
-                android:layout_marginEnd="48dp"
-                android:text="@string/registration_subheading_text"
-                android:textAlignment="center"
-                android:textSize="14sp" />
-        </FrameLayout>
 
         <!-- Form Section -->
         <LinearLayout
@@ -55,6 +55,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/registration_heading_text"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <!-- TextView for additional registration text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:layout_marginEnd="48dp"
+                android:text="@string/registration_subheading_text"
+                android:textAlignment="center"
+                android:textSize="14sp" />
 
             <!-- First Name -->
             <com.google.android.material.textfield.TextInputLayout
@@ -327,3 +346,4 @@
 
     </LinearLayout>
 </ScrollView>
+</LinearLayout>

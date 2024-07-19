@@ -40,7 +40,10 @@ public class LoginPage extends AppCompatActivity {
         init();
         userDAO = new UserDAO(this);
         userDAO.open();
+        textWatchListener();
+    }
 
+    private void buttonClicked(){
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +55,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the register activity
+                clearfields();
                 Intent intent = new Intent(LoginPage.this, RegisterPage.class);
                 startActivity(intent);
             }
@@ -83,7 +87,6 @@ public class LoginPage extends AppCompatActivity {
                 return false;
             }
         });
-        textWatchListener();
     }
 
     @Override
@@ -235,5 +238,4 @@ public class LoginPage extends AppCompatActivity {
         emailInput.setText("");
         passwordInput.setText("");
     }
-
 }

@@ -60,24 +60,31 @@ public class RegisterPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.example.firstandroidapp.R.layout.activity_register_page);
-
+        setSupportActionBar(findViewById(R.id.my_toolbar));
+        // Setting the title for the app bar
+        getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         // Initialize views and widgets
         init();
-
         // Initialize the database
         userDAO = new UserDAO(this);
         userDAO.open();
-
         // Set up text change listeners for input validation
         textWatchListener();
-
-
+        buttonClick();
         // Assuming dateOfBirthEditText is defined somewhere in your RegisterPage class
-
-// Example: defining dateOfBirthEditText
-        TextInputEditText dateOfBirthEditText = findViewById(R.id.dateOfBirth);
-
+//// Example: defining dateOfBirthEditText
 // Setting up OnTouchListener for dateOfBirthEditText
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private void buttonClick(){
         dateOfBirthEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -93,7 +100,7 @@ public class RegisterPage extends AppCompatActivity {
                 return false; // Let other touch events pass through
             }
         });
-        onClickRegisterButton();
+
         passwordEditText.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -145,11 +152,30 @@ public class RegisterPage extends AppCompatActivity {
             }
         });
 
+
+
         loginHere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(RegisterPage.this,LoginPage.class);
                 startActivity(intent);
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email=emailEditText.getText().toString().trim();
+                // Validate inputs when register button is clicked
+                if (validateInputs(v)) {
+                    saveFormDetails();
+                    // If inputs are valid, clear fields
+                    flag = false;
+                    clearFields();
+                    Utility.displaySuccessSnackbar(v,"Registered Successfully",RegisterPage.this);
+                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -198,6 +224,7 @@ public class RegisterPage extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         genderView=findViewById(R.id.genderView);
         loginHere=findViewById(R.id.loginHere);
+        dateOfBirthEditText = findViewById(R.id.dateOfBirth);
 
         // Populate the Spinner with data
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -254,6 +281,7 @@ public class RegisterPage extends AppCompatActivity {
             Utility.displayErrorSnackbar(v,"Please provide your First Name",RegisterPage.this);
         } else {
             fnameLayout.setError(null);
+            isValid=true;
         }
 
         // Validate email address
@@ -272,6 +300,7 @@ public class RegisterPage extends AppCompatActivity {
             Utility.displayErrorSnackbar(v,"Email already exists",RegisterPage.this);
         } else {
             emailLayout.setError(null);
+            isValid=true;
         }
 
         // Validate password criteria
@@ -321,7 +350,8 @@ public class RegisterPage extends AppCompatActivity {
         } else {
             genderErrorText.setVisibility(View.GONE);
             selectGender.setTextColor(Color.BLACK);
-            genderView.setBackgroundColor(Color.GRAY);// Reset to default color
+            genderView.setBackgroundColor(Color.GRAY);
+            isValid=true;// Reset to default color
         }
 
         // Validate terms and conditions
@@ -628,24 +658,7 @@ public class RegisterPage extends AppCompatActivity {
     }
 
     // Method to set up click listener for the registration button
-    private void onClickRegisterButton() {
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email=emailEditText.getText().toString().trim();
-                // Validate inputs when register button is clicked
-                if (validateInputs(v)) {
-                    saveFormDetails();
-                    // If inputs are valid, clear fields
-                    flag = false;
-                    clearFields();
-                    Utility.displaySuccessSnackbar(v,"Registered Successfully",RegisterPage.this);
-                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
-                    startActivity(intent);
-                }
-            }
-        });
-    }
+
 
 
     // Method to display DatePickerDialog for date of birth selection

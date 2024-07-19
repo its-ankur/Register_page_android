@@ -17,7 +17,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="accept_terms">I accept the terms and conditions</string>
+    <string name="accept_terms">I accept the terms and conditions *</string>
     <string name="register_button_text">Register</string>
     <string-array name="country_array">
         <item>Select Country</item>
