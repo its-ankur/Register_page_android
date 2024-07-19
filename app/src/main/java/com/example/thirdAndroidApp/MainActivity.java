@@ -4,7 +4,9 @@ package com.example.thirdAndroidApp;
 // Import statements to include necessary Android and Java classes
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle; // Importing the Bundle class used to pass data between activities
 import android.view.View;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView countineToRegisterPage;
     // Intent to start the RegisterPage activity
     Intent intent;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.toolbar_heading);
         // Finding the continue button TextView by its ID
         countineToRegisterPage = findViewById(R.id.countineToRegisterPage);
+        sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     // Method to set up the click listener for the continue button
@@ -58,9 +64,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Creating an intent to start the RegisterPage activity
-                intent = new Intent(MainActivity.this, LoginPage.class);
-                // Starting the RegisterPage activity
-                startActivity(intent);
+                String a=sharedPreferences.getString(Utility.status,"");
+                if(a.equals("true")){
+                    intent=new Intent(MainActivity.this, ShowDetailsPage.class);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(MainActivity.this, LoginPage.class);
+                    // Starting the RegisterPage activity
+                    startActivity(intent);
+                }
             }
         });
     }

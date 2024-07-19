@@ -12,6 +12,17 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class Utility {
 
+
+    public static final String saveDetailsFilename = "login_details";
+    public static final String firstNameKey = "first_name_key";
+    public static final String lastNameKey = "last_name_key";
+    public static final String emailAddressKey = "email_address_key";
+    public static final String countryKey = "country_selection_key";
+    public static final String genderKey = "gender_selection_key";
+    public static final String dateOfBirthKey = "date_of_birth_key";
+    public static final String contactNumberKey = "contact_number_key";
+    public static final String status="status_key";
+
     // Method to display a Snackbar for success messages
     public static void displaySuccessSnackbar(View view, String message, Context context) {
         // Create a Snackbar with the provided message and indefinite duration

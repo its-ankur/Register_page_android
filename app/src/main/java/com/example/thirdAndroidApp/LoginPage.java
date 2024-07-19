@@ -1,6 +1,8 @@
 package com.example.thirdAndroidApp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -28,6 +30,8 @@ public class LoginPage extends AppCompatActivity {
     private TextView registerHere;
     private UserDAO userDAO;
     private boolean flag=true;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,8 @@ public class LoginPage extends AppCompatActivity {
         passwordInput = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btnLogin);
         registerHere = findViewById(R.id.registerHere);
+        sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     private void loginUser(View v) {
@@ -152,6 +158,9 @@ public class LoginPage extends AppCompatActivity {
                     startActivity(intent);
                     flag=false;
                     clearfields();
+                    editor.putString(Utility.status,"true");
+                    editor.putString(Utility.emailAddressKey,email);
+                    editor.apply();
                 } else {
                     // Password is incorrect
                     passwordLayout.setError("Invalid password");

@@ -74,7 +74,7 @@
                 android:id="@+id/emailView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ABCDEFGH"
+                android:text="abc@mail.com"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -96,7 +96,7 @@
                 android:id="@+id/genderView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ABCDEFGH"
+                android:text="male"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -119,12 +119,71 @@
                 android:id="@+id/countryView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ABCDEFGH"
+                android:text="India"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateOfBirth"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Date Of Birth-"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/dateOfBirthView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="07/04/2003"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contactSet"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Contact-"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/contactView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1234567890"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/LogoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:textColor="@color/white"
+        android:background="@drawable/logout_button_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

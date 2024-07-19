@@ -1,0 +1,17 @@
+<resources>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here -->
+    </style>
+
+    <!-- Custom AlertDialog style -->
+    <style name="CustomAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Set the background color of the dialog -->
+        <item name="android:background">@color/orange</item>
+        <!-- Set other properties like padding if needed -->
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- Color resource for orange background -->
+    <color name="orange">#FFA500</color>
+</resources>

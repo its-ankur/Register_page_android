@@ -670,6 +670,4 @@ public class RegisterPage extends AppCompatActivity {
                 year, month, day);
         datePickerDialog.show();
     }
-
-
 }
