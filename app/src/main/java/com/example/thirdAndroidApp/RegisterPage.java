@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -59,7 +60,7 @@ public class RegisterPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.firstandroidapp.R.layout.activity_register_page);
+        setContentView(R.layout.activity_register_page);
         setSupportActionBar(findViewById(R.id.my_toolbar));
         // Setting the title for the app bar
         getSupportActionBar().setTitle("Register");
@@ -69,7 +70,12 @@ public class RegisterPage extends AppCompatActivity {
         init();
         // Initialize the database
         userDAO = new UserDAO(this);
-        userDAO.open();
+        try {
+            userDAO.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
         // Set up text change listeners for input validation
         textWatchListener();
         buttonClick();

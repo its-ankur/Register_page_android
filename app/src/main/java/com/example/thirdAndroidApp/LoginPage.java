@@ -3,11 +3,13 @@ package com.example.thirdAndroidApp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,8 +41,21 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
         init();
         userDAO = new UserDAO(this);
-        userDAO.open();
+        try {
+            userDAO.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the error
+        }
+        buttonClicked();
         textWatchListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Toggle the flag to true when the activity is resumed
+        flag = true;
     }
 
     private void buttonClicked(){
@@ -55,6 +70,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the register activity
+                flag=false;
                 clearfields();
                 Intent intent = new Intent(LoginPage.this, RegisterPage.class);
                 startActivity(intent);
@@ -154,11 +170,13 @@ public class LoginPage extends AppCompatActivity {
             } else {
                 // Validate password
                 if (BCrypt.checkpw(password, user.getPassword())) {
+                    Log.d("check","passwordchecked");
                     // Password is correct, login successful
                     Utility.displaySuccessSnackbar(v,"Login Successful",LoginPage.this);
-                    Intent intent=new Intent(LoginPage.this, ShowDetailsPage.class);
+                    Intent intent=new Intent(LoginPage.this, ProfilePage.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
+                    Log.d("Check","Profile page intent started");
                     flag=false;
                     clearfields();
                     editor.putString(Utility.status,"true");

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Register Page</string>
+    <string name="app_name">Profile Page</string>
     <string name="registration_heading_text">Register</string>
     <string name="registration_subheading_text">Create your new account</string>
     <string name="first_name_hint">First Name *</string>
@@ -36,4 +36,6 @@
     <string name="register_button">Register here</string>
     <string name="switch_text1">Already have an account !</string>
     <string name="login_button">Login Here</string>
+    <string name="change_password">Change password ?</string>
+    <string name="update">UPDATE</string>
 </resources>

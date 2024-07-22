@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar for the app -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="18dp"
+        android:background="@android:color/holo_orange_dark"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+        app:titleTextColor="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+
+        <ImageButton
+            android:id="@+id/exit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/baseline_exit_to_app_24" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- FrameLayout containing a View for the shadow effect below the Toolbar -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar">
+
+        <!-- View to simulate a shadow under the Toolbar -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_background" />
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        tools:context=".ProfilePage">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Form Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/profileImageView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/profile_picture"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/editProfileImageView"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_add_a_photo_24"
+                        android:layout_alignBottom="@id/profileImageView"
+                        android:layout_alignRight="@id/profileImageView"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="4dp" />
+                </RelativeLayout>
+
+                <!-- First Name -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fnameLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@android:color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Last Name -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/lnameLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@android:color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Email -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email_address_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@android:color/black"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Contact Number -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/contactNumberLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/contact_number_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/contactNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="@android:color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Date of Birth -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dateOfBirthLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date_of_birth_hint"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dateOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/baseline_calendar_month_24"
+                        android:drawablePadding="8dp"
+                        android:inputType="text"
+                        android:textColor="@android:color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Country Spinner -->
+                <Spinner
+                    android:id="@+id/countrySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="10dp"
+                    android:spinnerMode="dropdown" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray" />
+
+                <!-- Gender Selection -->
+                <TextView
+                    android:id="@+id/selectGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="8dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="5dp"
+                    android:text="Select Gender *" />
+
+                <RadioGroup
+                    android:id="@+id/genderRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Male"
+                        app:buttonTint="@android:color/holo_orange_dark" />
+
+                    <RadioButton
+                        android:id="@+id/radioFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Female"
+                        app:buttonTint="@android:color/holo_orange_dark" />
+
+                    <RadioButton
+                        android:id="@+id/radioOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Other"
+                        app:buttonTint="@android:color/holo_orange_dark" />
+                </RadioGroup>
+
+                <View
+                    android:id="@+id/genderView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/genderErrorText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone"
+                    android:paddingStart="15dp"
+                    android:textSize="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/changePasswordCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Change Password" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password_hint"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:errorEnabled="true"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/passwordEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@android:color/black"
+                            android:drawableEnd="@drawable/baseline_remove_red_eye_24"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confirmPasswordInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/confirm_password_hint"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:errorEnabled="true"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirmPasswordEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@android:color/black"
+                            android:drawableEnd="@drawable/baseline_remove_red_eye_24"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                </LinearLayout>
+
+                <!-- Register Button -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/updateButton"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/register_button_background"
+                    android:text="@string/update"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

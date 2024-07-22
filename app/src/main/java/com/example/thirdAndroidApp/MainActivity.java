@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 // Creating an intent to start the RegisterPage activity
                 String a=sharedPreferences.getString(Utility.status,"");
                 if(a.equals("true")){
-                    intent=new Intent(MainActivity.this, ShowDetailsPage.class);
+                    intent=new Intent(MainActivity.this, ProfilePage.class);
                     startActivity(intent);
                 }
                 else {

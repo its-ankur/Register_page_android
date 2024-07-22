@@ -9,9 +9,6 @@ import android.util.Log;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserDAO {
 
     private SQLiteDatabase database;
@@ -22,19 +19,36 @@ public class UserDAO {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // Open the database connection
+    // Method to get writable database
+    private SQLiteDatabase getWritableDatabase() {
+        if (database == null || !database.isOpen()) {
+            database = dbHelper.getWritableDatabase();
+        }
+        return database;
+    }
+
+    // Method to get readable database
+    private SQLiteDatabase getReadableDatabase() {
+        if (database == null || !database.isOpen()) {
+            database = dbHelper.getReadableDatabase();
+        }
+        return database;
+    }
+
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }
 
-    // Close the database connection
     public void close() {
-        dbHelper.close();
+        if (database != null && database.isOpen()) {
+            database.close();
+        }
     }
 
     // Insert a new user into the database
     public void insertUser(String firstName, String lastName, String email, String country, String gender, String password, String dateOfBirth, String contactNumber, boolean acceptedTerms) {
-        String hashedPassword= BCrypt.hashpw(password,BCrypt.gensalt());
+        SQLiteDatabase db = this.getWritableDatabase();
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_FIRST_NAME, firstName);
         values.put(DatabaseHelper.COLUMN_LAST_NAME, lastName);
@@ -46,14 +60,17 @@ public class UserDAO {
         values.put(DatabaseHelper.COLUMN_CONTACT_NUMBER, contactNumber);
         values.put(DatabaseHelper.COLUMN_ACCEPTED_TERMS, acceptedTerms ? 1 : 0);
 
-        database.insert(DatabaseHelper.TABLE_USERS,null,values);
+        db.insert(DatabaseHelper.TABLE_USERS, null, values);
+        db.close();
     }
 
     public Cursor getAllUsers() {
-        return database.query(DatabaseHelper.TABLE_USERS, null, null, null, null, null, null);
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(DatabaseHelper.TABLE_USERS, null, null, null, null, null, null);
     }
 
     public boolean isEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {
                 DatabaseHelper.COLUMN_EMAIL
         };
@@ -61,7 +78,7 @@ public class UserDAO {
         String selection = DatabaseHelper.COLUMN_EMAIL + " = ?";
         String[] selectionArgs = { email };
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 DatabaseHelper.TABLE_USERS,
                 projection,
                 selection,
@@ -71,13 +88,13 @@ public class UserDAO {
                 null
         );
 
-
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
     }
 
     public User getUserByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
         User user = null;
         String[] columns = {
                 DatabaseHelper.COLUMN_FIRST_NAME,
@@ -92,7 +109,7 @@ public class UserDAO {
         };
         String selection = DatabaseHelper.COLUMN_EMAIL + " = ?";
         String[] selectionArgs = { email };
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 DatabaseHelper.TABLE_USERS,
                 columns,
                 selection,
@@ -117,6 +134,77 @@ public class UserDAO {
         }
 
         return user;
+    }
+
+
+    public Boolean updateUserDetails(String oldEmail, User updatedUser) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            if (updatedUser.getFirstName() != null) {
+                values.put(DatabaseHelper.COLUMN_FIRST_NAME, updatedUser.getFirstName());
+            }
+            if(updatedUser.getLastName()!=null){
+                values.put(DatabaseHelper.COLUMN_LAST_NAME,updatedUser.getLastName());
+            }
+            if(updatedUser.getContactNumber()!=null){
+                values.put(DatabaseHelper.COLUMN_CONTACT_NUMBER,updatedUser.getContactNumber());
+            }
+            if (updatedUser.getDateOfBirth() != null) {
+                values.put(DatabaseHelper.COLUMN_DATE_OF_BIRTH, updatedUser.getDateOfBirth());
+            }
+            if (updatedUser.getCountry() != null) {
+                values.put(DatabaseHelper.COLUMN_COUNTRY, updatedUser.getCountry());
+            }
+            if (updatedUser.getGender() != null) {
+                values.put(DatabaseHelper.COLUMN_GENDER, updatedUser.getGender());
+            }
+            if (updatedUser.getPassword() != null) {
+                String hashedPassword = BCrypt.hashpw(updatedUser.getPassword(), BCrypt.gensalt());
+                values.put(DatabaseHelper.COLUMN_PASSWORD, hashedPassword);
+            }
+
+            int result = db.update(DatabaseHelper.TABLE_USERS, values, DatabaseHelper.COLUMN_EMAIL + " = ?", new String[]{oldEmail});
+            return result > 0;
+        } catch (Exception e) {
+            Log.e("UserDAO", "Update failed", e);
+            return false;
+        }
+    }
+
+    public Boolean updateUserWithoutPassword(String oldEmail, User updatedUser) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            if (updatedUser.getFirstName() != null) {
+                values.put(DatabaseHelper.COLUMN_FIRST_NAME, updatedUser.getFirstName());
+            }
+            if(updatedUser.getLastName()!=null){
+                values.put(DatabaseHelper.COLUMN_LAST_NAME,updatedUser.getLastName());
+            }
+            if(updatedUser.getContactNumber()!=null){
+                values.put(DatabaseHelper.COLUMN_CONTACT_NUMBER,updatedUser.getContactNumber());
+            }
+            if (updatedUser.getDateOfBirth() != null) {
+                values.put(DatabaseHelper.COLUMN_DATE_OF_BIRTH, updatedUser.getDateOfBirth());
+            }
+            if (updatedUser.getCountry() != null) {
+                values.put(DatabaseHelper.COLUMN_COUNTRY, updatedUser.getCountry());
+            }
+            if (updatedUser.getGender() != null) {
+                values.put(DatabaseHelper.COLUMN_GENDER, updatedUser.getGender());
+            }
+
+            int result = db.update(DatabaseHelper.TABLE_USERS, values, DatabaseHelper.COLUMN_EMAIL + " = ?", new String[]{oldEmail});
+            return result > 0;
+        } catch (Exception e) {
+            Log.e("UserDAO", "Update failed", e);
+            return false;
+        }
     }
 
 

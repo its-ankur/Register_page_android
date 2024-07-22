@@ -24,6 +24,10 @@ public class User {
         this.termsAccepted = termsAccepted;
     }
 
+    public User() {
+
+    }
+
     // Getters and setters for each field
     public String getFirstName() {
         return firstName;

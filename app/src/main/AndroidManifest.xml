@@ -29,6 +29,11 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name="com.example.thirdAndroidApp.ProfilePage"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="com.example.thirdAndroidApp.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
