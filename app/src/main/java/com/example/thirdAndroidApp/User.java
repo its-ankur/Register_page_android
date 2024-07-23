@@ -10,9 +10,10 @@ public class User {
     private String dateOfBirth; // New field
     private String contactNumber; // New field
     private boolean termsAccepted;
+    private byte[] image;
 
     public User(String firstName, String lastName, String email, String country, String gender,
-                String password, String dateOfBirth, String contactNumber, boolean termsAccepted) {
+                String password, String dateOfBirth, String contactNumber, boolean termsAccepted,byte[] image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,6 +23,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.contactNumber = contactNumber;
         this.termsAccepted = termsAccepted;
+        this.image=image;
     }
 
     public User() {
@@ -99,5 +101,13 @@ public class User {
 
     public void setTermsAccepted(boolean termsAccepted) {
         this.termsAccepted = termsAccepted;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

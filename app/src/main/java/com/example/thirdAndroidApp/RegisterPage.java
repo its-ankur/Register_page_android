@@ -647,7 +647,8 @@ public class RegisterPage extends AppCompatActivity {
                 passwordEditText.getText().toString(),
                 dateOfBirthEditText.getText().toString(),
                 contactNumber.getText().toString(),
-                termsCheckBox.isChecked()
+                termsCheckBox.isChecked(),
+                null
         );
 
         userDAO.insertUser(

@@ -1,9 +1,17 @@
 package com.example.thirdAndroidApp;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -16,20 +24,30 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.firstandroidapp.R;
 import com.example.firstandroidapp.databinding.ActivityProfilePageBinding;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +63,9 @@ public class ProfilePage extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private String userEmail;
     private boolean flag = true;
+    private static final int REQUEST_PERMISSIONS = 123;
+    private static final int IMAGE_PICKER_REQUEST_CODE = 100;
+    private static final int UCROP_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +100,15 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     private void setupListeners() {
+
+        binding.editProfileImageView.setOnClickListener(v->{
+            if (arePermissionsGranted()) {
+                showImageSourceDialog();
+            } else {
+                requestPermissionsIfNeeded();
+            }
+        });
+
         binding.changePasswordCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 binding.passwordInputLayout.setVisibility(View.VISIBLE);
@@ -159,6 +189,139 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Toggle the flag to true when the activity is resumed
+        userDAO.open();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("MainActivity", "onActivityResult called with requestCode: " + requestCode + ", resultCode: " + resultCode);
+
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == IMAGE_PICKER_REQUEST_CODE) {
+                Log.d("MainActivity", "request code matches image picker request code");
+                Uri imageUri = data.getData();
+                if (imageUri != null) {
+                    Log.d("MainActivity", "imageUri not equal to null");
+                    startCrop(imageUri);
+                }
+                else{
+                    Log.e("MainActivity","imageUri is null");
+                }
+            } else if (requestCode == UCROP_REQUEST_CODE) {
+                Log.d("MainActivity", "request code matches UCROP request code");
+                Uri resultUri = UCrop.getOutput(data);
+                if (resultUri != null) {
+                    Log.d("MainActivity", "Cropped Image URI: " + resultUri.toString());
+                    displayCroppedImage(resultUri);
+                    // Convert URI to byte[] and update user image in database
+                    try {
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        byte[] imageBytes = outputStream.toByteArray();
+
+                        // Assuming `userEmail` is defined elsewhere in your class
+                        userDAO.setUserImage(userEmail, imageBytes);
+                    } catch (IOException e) {
+                        Log.e("MainActivity", "Failed to convert image URI to byte array", e);
+                    }
+                } else {
+                    Log.e("MainActivity", "Cropped Image URI is null.");
+                }
+            } else {
+                Log.d("MainActivity", "requestCode does not match any known request code");
+            }
+        } else {
+            Log.d("MainActivity", "resultCode not OK or data is null");
+        }
+    }
+
+    private void startCrop(Uri uri) {
+        Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "profile_image_crop.jpg"));
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionQuality(80);
+        options.setMaxBitmapSize(1024);
+        options.withMaxResultSize(1000, 1000);
+
+        UCrop.of(uri, destinationUri)
+                .withOptions(options)
+                .start(this, UCROP_REQUEST_CODE); // Ensure request code is passed
+    }
+    private void displayCroppedImage(Uri uri) {
+        binding.profileImageView.setImageURI(uri);
+    }
+
+
+    private void requestPermissionsIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Request READ_MEDIA_IMAGES for API level 33 and above
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_PERMISSIONS);
+        } else {
+            // Request READ_EXTERNAL_STORAGE for older versions
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSIONS);
+        }
+    }
+
+    private boolean arePermissionsGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions granted
+                Log.d("MainActivity","Permission Granted");
+                showImageSourceDialog();
+            } else {
+                // Permissions denied
+                Log.d("MainActivity","Permission not Granted");
+            }
+        }
+    }
+
+    private void showImageSourceDialog() {
+        String[] options = {"Camera", "Gallery", "Files"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Image Source");
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    // Camera
+                    ImagePicker.with(this)
+                            .cameraOnly()
+                            .start(IMAGE_PICKER_REQUEST_CODE);
+                    break;
+                case 1:
+                    // Gallery
+                    ImagePicker.with(this)
+                            .galleryOnly()
+                            .start(IMAGE_PICKER_REQUEST_CODE);
+                    break;
+                case 2:
+                    // Files
+                    ImagePicker.with(this)
+                            .galleryMimeTypes(new String[]{"image/*"})
+                            .start(IMAGE_PICKER_REQUEST_CODE);
+                    break;
+            }
+        });
+        builder.show();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
@@ -169,6 +332,8 @@ public class ProfilePage extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(event);
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -444,27 +609,33 @@ public class ProfilePage extends AppCompatActivity {
 
     private void saveFormDetails(View v) {
         // Retrieve form details
-        String fullName = binding.fname.getText().toString().trim();
+        String firstName = binding.fname.getText().toString().trim();
         String lastName=binding.lname.getText().toString().trim();
         String contactNumber=binding.contactNumber.getText().toString().trim();
         String dateOfBirth = binding.dateOfBirth.getText().toString().trim();
         String country = binding.countrySpinner.getSelectedItem().toString();
         String gender = ((RadioButton) findViewById(binding.genderRadioGroup.getCheckedRadioButtonId())).getText().toString();
-        String password = binding.passwordEditText.getText().toString().trim();
+
+        // Check if password update is required
+        String password = passwordCheck ? binding.passwordEditText.getText().toString().trim() : null;
+
+        // Retrieve the profile image bitmap if available
+        Bitmap profileImage = ((BitmapDrawable) binding.profileImageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        profileImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] profileImageBytes = outputStream.toByteArray();
+
+
 
         // Create a User object with the updated details
         User updatedUser = new User();
-        updatedUser.setFirstName(fullName);
+        updatedUser.setFirstName(firstName);
         updatedUser.setLastName(lastName);
         updatedUser.setContactNumber(contactNumber);
         updatedUser.setDateOfBirth(dateOfBirth);
         updatedUser.setCountry(country);
         updatedUser.setGender(gender);
-        if (passwordCheck) {
-            updatedUser.setPassword(password); // Include password if it needs to be updated
-        } else {
-            updatedUser.setPassword(null); // Ensure password is null if not updating
-        }
+        updatedUser.setImage(profileImageBytes);
 
         // Call appropriate method based on whether the password is checked
         if (passwordCheck) {
@@ -507,6 +678,11 @@ public class ProfilePage extends AppCompatActivity {
                     default:
                         binding.genderRadioGroup.clearCheck(); // Clear selection if no match
                         break;
+                }
+
+                if(user.getImage()!=null){
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
+                    binding.profileImageView.setImageBitmap(bitmap);
                 }
 
             } else {

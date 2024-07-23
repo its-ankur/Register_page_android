@@ -105,7 +105,8 @@ public class UserDAO {
                 DatabaseHelper.COLUMN_PASSWORD,
                 DatabaseHelper.COLUMN_DATE_OF_BIRTH,
                 DatabaseHelper.COLUMN_CONTACT_NUMBER,
-                DatabaseHelper.COLUMN_ACCEPTED_TERMS
+                DatabaseHelper.COLUMN_ACCEPTED_TERMS,
+                DatabaseHelper.COLUMN_IMAGE
         };
         String selection = DatabaseHelper.COLUMN_EMAIL + " = ?";
         String[] selectionArgs = { email };
@@ -128,7 +129,8 @@ public class UserDAO {
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PASSWORD)),
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_DATE_OF_BIRTH)),
                     cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_CONTACT_NUMBER)),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ACCEPTED_TERMS)) > 0
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ACCEPTED_TERMS)) > 0,
+                    cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_IMAGE))
             );
             cursor.close();
         }
@@ -165,6 +167,11 @@ public class UserDAO {
                 String hashedPassword = BCrypt.hashpw(updatedUser.getPassword(), BCrypt.gensalt());
                 values.put(DatabaseHelper.COLUMN_PASSWORD, hashedPassword);
             }
+            if (updatedUser.getImage() != null) {
+                values.put(DatabaseHelper.COLUMN_IMAGE, updatedUser.getImage()); // Update image
+            }
+
+
 
             int result = db.update(DatabaseHelper.TABLE_USERS, values, DatabaseHelper.COLUMN_EMAIL + " = ?", new String[]{oldEmail});
             return result > 0;
@@ -198,6 +205,9 @@ public class UserDAO {
             if (updatedUser.getGender() != null) {
                 values.put(DatabaseHelper.COLUMN_GENDER, updatedUser.getGender());
             }
+            if (updatedUser.getImage() != null) {
+                values.put(DatabaseHelper.COLUMN_IMAGE, updatedUser.getImage()); // Update image
+            }
 
             int result = db.update(DatabaseHelper.TABLE_USERS, values, DatabaseHelper.COLUMN_EMAIL + " = ?", new String[]{oldEmail});
             return result > 0;
@@ -207,5 +217,13 @@ public class UserDAO {
         }
     }
 
+    // Separate method to set or update user image
+    public void setUserImage(String email, byte[] image) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_IMAGE, image);
 
+        db.update(DatabaseHelper.TABLE_USERS, values, DatabaseHelper.COLUMN_EMAIL + " = ?", new String[]{email});
+        db.close();
+    }
 }

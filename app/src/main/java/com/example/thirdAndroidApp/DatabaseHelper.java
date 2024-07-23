@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DATE_OF_BIRTH = "date_of_birth";
     public static final String COLUMN_CONTACT_NUMBER = "contact_number";
     public static final String COLUMN_ACCEPTED_TERMS = "accepted_terms";
+    public static final String COLUMN_IMAGE="image";
 
     // Table creation statement
     private static final String TABLE_USERS_CREATE =
@@ -37,7 +38,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_PASSWORD + " TEXT NOT NULL, " +
                     COLUMN_DATE_OF_BIRTH + " TEXT NOT NULL, " +
                     COLUMN_CONTACT_NUMBER + " TEXT NOT NULL, " +
-                    COLUMN_ACCEPTED_TERMS + " INTEGER NOT NULL)";
+                    COLUMN_ACCEPTED_TERMS + " INTEGER NOT NULL, "+
+                    COLUMN_IMAGE+" BLOB)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -52,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d("DatabaseHelper", "Upgrading database from version " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
