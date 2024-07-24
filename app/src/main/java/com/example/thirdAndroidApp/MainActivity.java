@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.content.pm.ActivityInfo;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar; // Importing the Toolbar widget for app bar
 import androidx.appcompat.app.AppCompatActivity; // Importing AppCompatActivity class for compatibility support
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Setting the content view to the welcome page layout
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Initializing UI components

@@ -1,0 +1,4 @@
+<resources>
+    <color name="textInputTextColor">#FFFFFF</color> <!-- White -->
+    <color name="textInputLineColor">#FFFFFF</color> <!-- White -->
+</resources>
