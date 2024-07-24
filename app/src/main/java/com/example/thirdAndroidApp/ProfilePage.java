@@ -1,12 +1,15 @@
 package com.example.thirdAndroidApp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,16 +71,21 @@ public class ProfilePage extends AppCompatActivity {
     private static final int IMAGE_PICKER_REQUEST_CODE = 100;
     private static final int UCROP_REQUEST_CODE = 101;
 
+
+    @SuppressLint("SourceLockedOrientationActivity")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProfilePageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Setup Toolbar
         Toolbar toolbar = binding.myToolbar;
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("My Profile");
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("My Profile");
+
+        toolbar.setTitle("Profile Page");
 
         userDAO = new UserDAO(this);
         userDAO.open();
@@ -100,6 +109,15 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     private void setupListeners() {
+
+        binding.profileImageView.setClipToOutline(true);
+        binding.profileImageView.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                int diameter=Math.min(view.getWidth(),view.getHeight());
+                outline.setOval(0,0,diameter,diameter);
+            }
+        });
 
         binding.editProfileImageView.setOnClickListener(v->{
             if (arePermissionsGranted()) {
@@ -208,6 +226,7 @@ public class ProfilePage extends AppCompatActivity {
                 if (imageUri != null) {
                     Log.d("MainActivity", "imageUri not equal to null");
                     startCrop(imageUri);
+                    displayCroppedImage(imageUri);
                 }
                 else{
                     Log.e("MainActivity","imageUri is null");
@@ -252,6 +271,7 @@ public class ProfilePage extends AppCompatActivity {
                 .withOptions(options)
                 .start(this, UCROP_REQUEST_CODE); // Ensure request code is passed
     }
+
     private void displayCroppedImage(Uri uri) {
         binding.profileImageView.setImageURI(uri);
     }
@@ -293,7 +313,7 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     private void showImageSourceDialog() {
-        String[] options = {"Camera", "Gallery", "Files"};
+        String[] options = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Image Source");
         builder.setItems(options, (dialog, which) -> {
@@ -308,12 +328,6 @@ public class ProfilePage extends AppCompatActivity {
                     // Gallery
                     ImagePicker.with(this)
                             .galleryOnly()
-                            .start(IMAGE_PICKER_REQUEST_CODE);
-                    break;
-                case 2:
-                    // Files
-                    ImagePicker.with(this)
-                            .galleryMimeTypes(new String[]{"image/*"})
                             .start(IMAGE_PICKER_REQUEST_CODE);
                     break;
             }
@@ -672,11 +686,8 @@ public class ProfilePage extends AppCompatActivity {
                     case "Female":
                         binding.genderRadioGroup.check(R.id.radioFemale);
                         break;
-                    case "Other":
-                        binding.genderRadioGroup.check(R.id.radioOther);
-                        // Add other cases if needed
                     default:
-                        binding.genderRadioGroup.clearCheck(); // Clear selection if no match
+                        binding.genderRadioGroup.check(R.id.radioOther); // Clear selection if no match
                         break;
                 }
 

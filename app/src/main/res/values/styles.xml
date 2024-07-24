@@ -1,5 +1,15 @@
 <!-- res/values/styles.xml -->
 <resources>
+
+    <!-- In res/values/styles.xml -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="colorPrimaryDark">@color/toolbar_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
     <!-- Custom DatePickerDialog theme -->
     <style name="YellowDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
         <!-- Customize the dialog accent color -->

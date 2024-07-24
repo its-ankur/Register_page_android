@@ -49,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
         // Finding the Toolbar view by its ID and assigning it to the myToolbar variable
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         // Setting the Toolbar as the app bar for the activity
-        setSupportActionBar(myToolbar);
+//        setSupportActionBar(myToolbar);
         // Setting the title for the app bar
-        getSupportActionBar().setTitle(R.string.toolbar_heading);
+//        getSupportActionBar().setTitle(R.string.toolbar_heading);
         // Finding the continue button TextView by its ID
+
+
+        myToolbar.setTitle(getString(R.string.toolbar_heading));
+
         countineToRegisterPage = findViewById(R.id.countineToRegisterPage);
         sharedPreferences = getSharedPreferences(Utility.saveDetailsFilename, MODE_PRIVATE);
         editor = sharedPreferences.edit();

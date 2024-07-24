@@ -1,8 +1,8 @@
 <resources>
     <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here -->
-    </style>
+<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here &ndash;&gt;-->
+<!--    </style>-->
 
     <!-- Custom AlertDialog style -->
     <style name="CustomAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
