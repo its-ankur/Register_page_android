@@ -110,6 +110,15 @@ public class ProfilePage extends AppCompatActivity {
 
     private void setupListeners() {
 
+        binding.dataObject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utility.displaySuccessSnackbar(v,"Showing User Data page",ProfilePage.this);
+                Intent intent = new Intent(ProfilePage.this, Api.class);
+                startActivity(intent);
+            }
+        });
+
         binding.profileImageView.setClipToOutline(true);
         binding.profileImageView.setOutlineProvider(new ViewOutlineProvider() {
             @Override

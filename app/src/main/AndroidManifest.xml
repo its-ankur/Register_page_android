@@ -9,6 +9,7 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Remove WRITE_EXTERNAL_STORAGE if not needed -->
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> -->
 
@@ -40,6 +41,10 @@
 
         <activity
             android:name="com.example.thirdAndroidApp.ProfilePage"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.example.thirdAndroidApp.Api"
             android:exported="true"
             android:screenOrientation="portrait"/>
 
