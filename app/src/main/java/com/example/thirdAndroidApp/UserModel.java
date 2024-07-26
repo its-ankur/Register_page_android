@@ -1,6 +1,7 @@
 package com.example.thirdAndroidApp;
 
 public class UserModel {
+    private String id;
     private String firstName;
     private String maidenName;
     private String lastName;
@@ -11,8 +12,9 @@ public class UserModel {
     private String imageUrl;
 
     // Constructor
-    public UserModel(String firstName, String maidenName, String lastName, String hairColor,
-                     String addressAddress, String companyDepartment, String companyAddressAddress,String imageUrl) {
+    public UserModel(String id, String firstName, String maidenName, String lastName, String hairColor,
+                     String addressAddress, String companyDepartment, String companyAddressAddress, String imageUrl) {
+        this.id=id;
         this.firstName = firstName;
         this.maidenName = maidenName;
         this.lastName = lastName;
@@ -24,6 +26,9 @@ public class UserModel {
     }
 
     // Getters
+
+    public String getId(){ return id;}
+
     public String getFirstName() {
         return firstName;
     }
@@ -55,6 +60,8 @@ public class UserModel {
     public String getImageUrl(){return imageUrl;}
 
     // Setters
+    public void setId(String id){this.id=id;}
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

@@ -16,6 +16,7 @@
         app:titleTextColor="@android:color/white" />
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/my_toolbar">
@@ -24,8 +25,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:elevation="8dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            android:elevation="8dp" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -41,4 +42,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBarLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

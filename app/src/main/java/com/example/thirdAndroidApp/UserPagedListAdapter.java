@@ -30,6 +30,7 @@ public class UserPagedListAdapter extends PagingDataAdapter<UserModel, UserPaged
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         UserModel userModel = getItem(position);
         if (userModel != null) {
+            holder.textViewId.setText(userModel.getId());
             holder.textViewName.setText(userModel.getFirstName() + " " + userModel.getLastName());
             holder.textViewMaidenName.setText(userModel.getMaidenName());
             holder.textViewHairColor.setText(userModel.getHairColor());
@@ -40,6 +41,7 @@ public class UserPagedListAdapter extends PagingDataAdapter<UserModel, UserPaged
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewId;
         TextView textViewName;
         TextView textViewMaidenName;
         TextView textViewHairColor;
@@ -49,8 +51,8 @@ public class UserPagedListAdapter extends PagingDataAdapter<UserModel, UserPaged
 
         UserViewHolder(View itemView) {
             super(itemView);
+            textViewId=itemView.findViewById(R.id.userId);
             textViewName = itemView.findViewById(R.id.textViewName);
-            textViewHairColor=itemView.findViewById(R.id.textViewHairColor);
             textViewAddress=itemView.findViewById(R.id.textViewAddress);
             textViewCompanyDepartment=itemView.findViewById(R.id.textViewCompanyDepartment);
             textViewCompanyAddress=itemView.findViewById(R.id.textViewCompanyAddress);
